@@ -9,8 +9,11 @@ const Info = () => {
     // console.log('렌더링이 완료되었습니다.');
 
     // 2. useEffect 마운트 될 때마 특정 함수 실행 : 두 번째 인자로 빈 배열 전달
-    console.log('마운트 될 때만 실행');
-  }, []);
+    // console.log('마운트 될 때만 실행');
+
+    // 3. 특정 값이 업데이트 될 때마 실행
+    console.log('특정 값이 업데이트 될 때만 실행: 이름 변경중');
+  }, [name]);
 
   const onChangeName = ({ target }) => setName(target.value);
   const onChangeNickName = ({ target }) => setNickName(target.value);
