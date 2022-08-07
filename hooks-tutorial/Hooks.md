@@ -6,8 +6,10 @@ Hooks는 리액트 v16.8에 새로 도입된 기능으로 함수형 컴포넌트
 
 ### 참고
 
-[18. useCallback 를 사용하여 함수 재사용하기](https://react.vlpt.us/basic/18-useCallback.html
+[18. useCallback 를 사용하여 함수 재사용하기](https://react.vlpt.us/basic/18-useCallback.html)
+
 [Hooks API Reference - React](https://ko.reactjs.org/docs/hooks-reference.html#usecallback)
+
 [Using the State Hook - React](https://ko.reactjs.org/docs/hooks-state.html)
 
 - useState
@@ -222,9 +224,9 @@ const [value, setValue] = useState(0);
 
 # 4. useMemo
 
-<aside> 💡 `const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);`
-
-</aside>
+```
+💡 const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+```
 
 - `useMemo` 를 사용하면 함수형 컴포넌트 내부에서 발생하는 연산을 최적화할 수 있다.
 - 렌더링하는 과정에서 특정 값이 바뀌었을 때만 연산을 실행하고, 원하는 값이 바뀌지 않았다면 이전에 연산했던 결과를 다시 사용하는 방식.
