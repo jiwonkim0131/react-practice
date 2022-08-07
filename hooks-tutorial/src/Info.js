@@ -14,10 +14,11 @@ const Info = () => {
     // 4. 뒷정리하기
     // 4.1 컴포넌트가 언마운트 되기 전이나 업데이트 되기 직전에 어떤 작업을 하고 싶다면 useEffect에서 clean up 함수를 반환한다.
     // clean up 함수 - 현재는 컴포넌트가 업데이트 될 때도 clean up 함수가 호출됨
+    // clean up 함수2 - 현재는 컴포넌트가 언마운트 될 때만 clean up 함수가 호출됨
     return () => {
       console.log('clean up');
     };
-  }, [name]);
+  }, []);
 
   const onChangeName = ({ target }) => setName(target.value);
   const onChangeNickName = ({ target }) => setNickName(target.value);
