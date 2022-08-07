@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+//useState, useEffect 실습
+import React, { useState, useEffect } from 'react';
 
 const Info = () => {
   const [name, setName] = useState('');
   const [nickName, setNickName] = useState('');
+  useEffect(() => {
+    // 1. useEffect 기본 : 컴포넌트가 렌더링 될 때마다 콘솔이 출력된다
+    console.log('렌더링이 완료되었습니다.');
+  });
 
   const onChangeName = ({ target }) => setName(target.value);
   const onChangeNickName = ({ target }) => setNickName(target.value);
