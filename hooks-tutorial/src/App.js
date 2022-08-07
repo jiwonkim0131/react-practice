@@ -1,6 +1,6 @@
-import NewAverage from './NewAverage';
+import AutoFocusAverage from './AutoFocusAverage';
 
 const App = () => {
-  return <NewAverage />;
+  return <AutoFocusAverage />;
 };
 export default App;
