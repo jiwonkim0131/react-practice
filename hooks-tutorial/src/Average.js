@@ -1,6 +1,6 @@
 // useMemo 실습
 // useMemo를 사용하면 함수형 컴포넌트 내부에서 발생하는 연산을 최적화 할 수 있다.
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 const getAverage = nums => {
   console.log('평균값 계산');
@@ -11,6 +11,7 @@ const getAverage = nums => {
 const Average = () => {
   const [nums, setNums] = useState([]);
   const [number, setNumber] = useState('');
+  const avg = useMemo(() => getAverage(nums), [nums]); //nums가 바뀌지 않았다면 이전값 사용
 
   const onChange = ({ target }) => setNumber(target.value);
   const onClick = () => {
@@ -31,7 +32,7 @@ const Average = () => {
           <li key={index}>{val}</li>
         ))}
       </ul>
-      <p>평균값:{getAverage(nums)}</p>
+      <p>평균값:{avg}</p>
     </div>
   );
 };
