@@ -1,6 +1,6 @@
-import Average from './Average';
+import NewAverage from './NewAverage';
 
 const App = () => {
-  return <Average />;
+  return <NewAverage />;
 };
 export default App;
