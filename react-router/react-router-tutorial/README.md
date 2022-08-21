@@ -197,3 +197,61 @@ const App = () => {
 
 export default App;
 ```
+
+</br>
+
+# 13.4 URL 파라미터와 쿼리
+
+페이지 주소를 정의할 때 가끔 유동적인 값을 전달해야 할 때도 있다.
+이는 `파라미터`와 `쿼리`로 나눌 수 있다.
+
+- **파라미터** : /profiles/velopert
+      → 일반적으로 파라미터는 특정 id나 이름을 가지고 조회할 때 사용
+
+- **쿼리** : /about?details=true
+      → 쿼리의 경우엔 어떤 키워드를 검색하거나, 요청을 할 때 필요한 옵션을 전달할 때 사용
+
+유동적인 값을 사용해야 하는 상황에서 파라미터를 써야 할지, 쿼리를 써야 할지 정할 때
+무조건 따라야 하는 규칙은 없다. 다만 일반적으로 파라미터는 특정 아이디 혹은 이름을 사용하여 조회할 때 사용하고 쿼리는 어떤 키워드를 검색하거나 페이지에 필요한 옵션을 전달할 때 사용한다.
+
+## 13.4.1 URL 파라미터
+
+ex) 'Profile' 페이지에서 파라미터를 사용하여 유동적으로 `username` 을 넣어 줄 때 해당 값을 `props`로 받아와서 조회.
+
+```jsx
+import React from 'react';
+
+const data = {
+  velopert: {
+    name: '김민준',
+    description: '리액트를 좋아하는 개발자',
+  },
+  gildong: {
+    name: '홍길동',
+    description: '전래동화 흥부전의 주인공',
+  },
+};
+
+const Profile = ({ match }) => {
+  const { username } = match.params;
+  const profile = data[username];
+  if (!profile) {
+    return <div>존재하지 않는 사용자입니다.</div>;
+  }
+  return (
+    <div>
+      <h3>
+        {username}({profile.name})
+      </h3>
+      <p>{profile.description}</p>
+      <WithRouterSample />
+    </div>
+  );
+};
+
+export default Profile;
+```
+
+URL 파라미터를 사용할 때는 라우트로 사용되는 컴포넌트에서 받아 오는 `match`라는 객체 안의
+`params` 값을 참조한다.
+`match` 객체 안에는 현재 컴포넌트가 어떤 경로 규칙에 의해 보이는지에 대한 정보가 들어있다.
