@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
-import { Home, About, Profile } from '../pages/index';
+import { Home, About, Profile, HistorySample } from '../pages/index';
 
 const App = () => {
   return (
@@ -23,6 +23,7 @@ const App = () => {
       <Route exact path='/' component={Home} />
       <Route path={['/about', '/info']} component={About} />
       <Route path='/profile/:username' component={Profile} />
+      <Route path='/HistorySample' component={HistorySample} />
     </div>
   );
 };
