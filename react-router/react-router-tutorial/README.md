@@ -255,3 +255,52 @@ export default Profile;
 URL 파라미터를 사용할 때는 라우트로 사용되는 컴포넌트에서 받아 오는 `match`라는 객체 안의
 `params` 값을 참조한다.
 `match` 객체 안에는 현재 컴포넌트가 어떤 경로 규칙에 의해 보이는지에 대한 정보가 들어있다.
+
+</br>
+
+## 13.4.2 URL 쿼리
+
+ex) About 페이지에서 쿼리 받아오기
+
+쿼리는 `location` 객체에 들어 있는 `search` 값에서 조회할 수 있다.
+`location` 객체는 라우트로 사용된 컴포넌트에게 `props` 로 전달되며, 웹 애플리케이션의 현재 주소에 대한 정보를 지니고 있다.
+
+```jsx
+// location의 형태
+{
+  "pathname": "/about",
+  "search": "?detail=true",
+  "hash": ''
+}
+```
+
+-> 위 `location` 객체는 `http://localhost:3000/about?detail=true`주소로 접속했을 때의 값.
+
+URL 쿼리를 읽을 때는 `location` 객체가 지닌 값 중에서 `search` 값을 확인해야 한다.
+이 값은 문자열 형태로 되어있으며, `?detail=true&another=1`과 같이 문자열에 여러 가지 값을 설정해 줄 수 있다.
+따라서 `serarch` 값에서 특정 값을 읽어 오기 위해서는 이 문자열을 객체 형태로 반환해야 한다.
+
+쿼리 문자열을 객체로 반환할 때는 `qs`라는 라이브러를 사용한다.
+
+```jsx
+import React from 'react';
+import qs from 'qs';
+
+const About = ({ location }) => {
+  const query = qs.parse(location.search, {
+    ignoreQueryPrefix: true, // 이 설정을 통하여 문자열 맨 앞의 ? 를 생략합니다.
+  });
+  const showDetail = query.detail === 'true'; // 쿼리의 파싱 결과값은 문자열입니다.
+  return (
+    <div>
+      <h1>소개</h1>
+      <p>이 프로젝트는 리액트 라우터 기초를 실습해보는 예제 프로젝트입니다.</p>
+      {showDetail && <p>detail 값을 true 로 설정하셨군요!</p>}
+    </div>
+  );
+};
+
+export default About;
+```
+
+-> 쿼리 문자열을 객체로 파싱하는 과정에서 결과 값은 언제나 `문자열` 이라는 점에 주의해야 한다.
