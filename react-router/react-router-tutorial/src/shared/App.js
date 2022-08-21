@@ -15,7 +15,7 @@ const App = () => {
       </ul>
       <hr />
       <Route exact path='/' component={Home} />
-      <Route exact path='/about' component={About} />
+      <Route exact path={['/about', '/info']} component={About} />
     </div>
   );
 };

@@ -162,3 +162,38 @@ const App = () => {
 
 export default App;
 ```
+
+</br>
+
+# 13.3 Route 하나에 여러 개의 path 설정하기
+
+`path` props를 배열로 설정하면 여러 경로에서 같은 컴포넌트를 보여 줄 수 있다.
+
+```jsx
+import React from 'react';
+import { Route, Link, Switch } from 'react-router-dom';
+import About from './About';
+import Home from './Home';
+import Profiles from './Profiles';
+import HistorySample from './HistorySample';
+
+const App = () => {
+  return (
+    <div>
+      <ul>
+        <li>
+          <Link to='/'>홈</Link>
+        </li>
+        <li>
+          <Link to='/about'>소개</Link>
+        </li>
+      </ul>
+      <hr />
+      <Route path='/' component={Home} exact={true} />
+      <Route path={['/about', '/info']} component={About} />
+    </div>
+  );
+};
+
+export default App;
+```
