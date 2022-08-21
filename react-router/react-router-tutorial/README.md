@@ -304,3 +304,168 @@ export default About;
 ```
 
 -> 쿼리 문자열을 객체로 파싱하는 과정에서 결과 값은 언제나 `문자열` 이라는 점에 주의해야 한다.
+
+</br>
+
+# 13.6 리액트 라우터 부가 기능
+
+## 13.6.1 history
+
+`history` 객체는 라우트로 사용된 컴포넌트에 `match`, `location` 과 함께 전달되는 `props` 중 하나로,
+이 객체를 통해 컴포넌트 내에 구현하는 메서드에서 라우터 API를 호출할 수 있다.
+ex) 특정 버튼을 눌렀을 때 뒤로 가거나, 앞으로 가거나, 다른 페이지로 이동하는 것을 방지해야 할 때
+
+```jsx
+import React, { Component } from 'react';
+
+class HistorySample extends Component {
+  // 뒤로가기
+  handleGoBack = () => {
+    this.props.history.goBack();
+  };
+
+  // 홈으로 이동
+  handleGoHome = () => {
+    this.props.history.push('/');
+  };
+
+  componentDidMount() {
+    console.log(this.props);
+    // 이걸 설정하고 나면 페이지에 변화가 생기려고 할 때 마다 정말 나갈거냐고 질문
+    this.unblock = this.props.history.block('정말 떠나실건가요?');
+  }
+
+  componentWillUnmount() {
+    // 컴포넌트가 언마운트 되면, 그만 물음
+    if (this.unblock) {
+      this.unblock();
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <button onClick={this.handleGoBack}>뒤로</button>
+        <button onClick={this.handleGoHome}>홈으로</button>
+      </div>
+    );
+  }
+}
+
+export default HistorySample;
+```
+
+## 13.6.2 withRouter
+
+`withRouter` 함수는 `Hoc`로 라우트로 사용된 컴포넌트가 아니어도 `match`, `location`, `history` 객체를 접근할 수 있도록 해준다.
+
+```jsx
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+const WithRouterSample = ({ location, match, history }) => {
+  return (
+    <div>
+      <h4>location</h4>
+      <textarea value={JSON.stringify(location, null, 2)} rows={7} readOnly={true} />
+      <h4>match</h4>
+      <textarea value={JSON.stringify(match, null, 2)} rows={7} readOnly={true} />
+      <button onClick={() => history.push('/')}>홈으로</button>
+    </div>
+  );
+};
+
+export default withRouter(WithRouterSample);
+```
+
+## 13.6.3 Switch
+
+`Switch` 컴포넌트는 여러 `Route`를 감싸서 그중 일치하는 단 하나의 라우트만을 렌더링 시켜준다.
+`Switch`를 이용하면 모든 규칙과 일치하지 않을 때 보여 줄 `Not Found` 페이지도 구현할 수 있다.
+
+```jsx
+import React from 'react';
+import { Route, Link, Switch } from 'react-router-dom';
+import About from './About';
+import Home from './Home';
+import Profiles from './Profiles';
+import HistorySample from './HistorySample';
+
+const App = () => {
+  return (
+    <div>
+      <ul>
+        <li>
+          <Link to='/'>홈</Link>
+        </li>
+        <li>
+          <Link to='/about'>소개</Link>
+        </li>
+        <li>
+          <Link to='/profiles'>프로필</Link>
+        </li>
+        <li>
+          <Link to='/history'>History 예제</Link>
+        </li>
+      </ul>
+      <hr />
+      <Switch>
+        <Route path='/' component={Home} exact={true} />
+        <Route path={['/about', '/info']} component={About} />
+        <Route path='/profiles' component={Profiles} />
+        <Route path='/history' component={HistorySample} />
+        <Route
+          // path를 따로 정의하지 않으면 모든 상황에 렌더링됨
+          render={({ location }) => (
+            <div>
+              <h2>이 페이지는 존재하지 않습니다:</h2>
+              <p>{location.pathname}</p>
+            </div>
+          )}
+        />
+      </Switch>
+    </div>
+  );
+};
+
+export default App;
+```
+
+## 13.6.4 NavLink
+
+`NavLink`는 `Link`와 비슷한다. 현재 경로와 `Link`에서 사용하는 경로가 일치하는 경우 특정 스타일 혹은 CSS클래스를 적용할 수 있는 컴포넌트.
+`NavLink`에서 링크가 활성화되었을 때의 스타일을 적용할 때는 `activeStyle`값을, CSS 클래스를 적용할 때는 `activeClassName`값을 props로 넣어준다.
+
+```jsx
+import React from 'react';
+import { NavLink, Route } from 'react-router-dom';
+import Profile from './Profile';
+
+const Profiles = () => {
+  const activeStyle = {
+    background: 'black',
+    color: 'white',
+  };
+  return (
+    <div>
+      <h3>사용자 목록:</h3>
+      <ul>
+        <li>
+          <NavLink activeStyle={activeStyle} to='/profiles/velopert' active>
+            velopert
+          </NavLink>
+        </li>
+        <li>
+          <NavLink activeStyle={activeStyle} to='/profiles/gildong'>
+            gildong
+          </NavLink>
+        </li>
+      </ul>
+
+      <Route path='/profiles' exact render={() => <div>유저를 선택해주세요.</div>} />
+      <Route path='/profiles/:username' component={Profile} />
+    </div>
+  );
+};
+
+export default Profiles;
+```
